@@ -55,13 +55,13 @@
   border: none; 
   border-radius: 0 5px 5px 0;
   cursor: pointer;
-  transform: .3s ease;
+  transition: .3s ease;
 }
 
-/* .search_section button:hover {
-  background-color: hsl(118,71.5%,30.8%);
-  border-radius: 2px 5px 5px 2px;
-} */
+
+.search_section button:hover {
+  opacity: 0.5;
+}
 
 .search_history {
   border:  2px solid gray;
@@ -75,10 +75,18 @@
   justify-content: space-between;
 }
 
-.search_history-header-section button {
+.clear-history {
   border: none;
   background: none;
   cursor: pointer;
+  transition: .3s ease;
+  border-radius: 4px;
+  padding: 0 1px;
+}
+
+.clear-history:hover {
+  background-color: hsl(0,4.1%,51.9%);
+  color: white;
 }
 
 .search_history h4{
@@ -120,4 +128,43 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1rem;
+  justify-content: center;
+}
+
+.weather-card {
+  border: 3px solid #1ee82c;
+  border-radius: 5px;
+  padding: 4px 2px;
+  max-width: 350px;
+}
+
+.error-message {
+  padding: 20px 5px;
+  border: 3px solid  hsl(0,95%,39.2%);
+  color: hsl(0,95%,39.2%);
+  text-align: center;
+}
+
+.loading {
+  text-align: center;
+  padding: 20px;
+  font-size: 18px;
+}
+
+/* Optional spinner */
+.loading::after {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-left: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

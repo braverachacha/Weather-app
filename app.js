@@ -1,4 +1,4 @@
-  // BUTTONS
+// BUTTONS
 const randomButton = document.querySelector('.js-random-button');
 const clearHistoryButton = document.querySelector('.js-clear-history');
 const searchButton = document.querySelector('.js-search-button');
@@ -9,61 +9,123 @@ const searchInput = document.querySelector('.js-search-input');
 // DISPLAY ELEMENTS
 const searchHistoryDisplay = document.querySelector('.js-search-history'); 
 const displayGrid = document.querySelector('.js-display_grid');
-
+const loadingElement = document.querySelector('.js-loading');
 
 // GLOBAL VARIABLES
 const searchHistory = []; 
 const dataObtained = []; 
-const randomData = [];
-
-
-// LOGICS
 
 // DATA FETCH 
+// DATA FETCH 
 async function fetchData(url) {
+  loadingElement.style.display = 'block'; // Show loading
+  displayGrid.innerHTML = ''; // Clear previous content
+  
   try {
-    const response = await fetch(`${url}`);
+    const response = await fetch(url);
     if (!response.ok) {
-      throw new Error(`HTTP error! status: `);
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
     const data = await response.json();
-    dataObtained.push(data)
+    
+    if (data.error) {
+      displayGrid.innerHTML = `<div class='error-message'>Error: ${data.error}</div>`;
+      return;
+    }
+    
+    dataObtained.push(data);
+    dataDisplay();
+    return data;
   } catch (error) {
     console.error('Fetch error:', error);
+    displayGrid.innerHTML = `<div class='error-message'>Error occurred! Please try again.</div>`;
+  } finally {
+    loadingElement.style.display = 'none'; // Hide loading when done
   }
 }
 
-randomButton.addEventListener('click', ()=>{
-  fetchData('http://127.0.0.1:5000/api/data/')
-  value = dataObtained;
-  console.log(value)
-})
+// DATA SEARCH AND DISPLAY
+// DATA SEARCH AND DISPLAY
+async function searchWeather(cityName) {
+  loadingElement.style.display = 'block'; // Show loading
+  displayGrid.innerHTML = ''; // Clear previous content
+  
+  try {
+    const response = await fetch('http://127.0.0.1:5000/api/search/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ city: cityName })
+    });
+    
+    const data = await response.json();
+    
+    if (data.error) {
+      displayGrid.innerHTML = `<div class='error-message'>Error: ${data.error}</div>`;
+      return;
+    }
+    
+    dataObtained.push(data);
+    dataDisplay();
+    console.log(data);
+    return data;
+  } catch (error) {
+    console.error('Search error:', error);
+    displayGrid.innerHTML = `<div class='error-message'>Failed to fetch weather data. Please try again.</div>`;
+  } finally {
+    loadingElement.style.display = 'none'; // Hide loading when done
+  }
+}
 
-const dataDisplay = ()=>{
-  if (randomData.length > 0) {
-    console.log(randomData)
+
+// DISPLAY DATA
+const dataDisplay = () => {
+  if (dataObtained.length > 0) {
+    displayGrid.innerHTML = '';
+    dataObtained.forEach((weather) => {
+      displayGrid.innerHTML += `
+        <div class="weather-card">
+          <h2>${weather.city}, ${weather.country}</h2>
+          <img src="https://openweathermap.org/img/wn/${weather.icon}@2x.png" alt="${weather.description}">
+          <p class="temp">${Math.round(weather.temp)}°C</p>
+          <p class="description">${weather.description}</p>
+          <div class="details">
+            <p>Feels like: ${Math.round(weather.feels_like)}°C</p>
+            <p>Humidity: ${weather.humidity}%</p>
+            <p>Wind: ${weather.wind} m/s</p>
+            <p>Max: ${Math.round(weather.temp_max)}°C | Min: ${Math.round(weather.temp_min)}°C</p>
+          </div>
+        </div>
+      `;
+    });
   } else {
-    console.log('blank')
+    console.log('No data available');
   }
 };
-dataDisplay();
 
-// HISORY UPDATE
-const historyUpdate = ()=>{
-  searchButton.addEventListener('click', ()=>{
-    const value = searchInput.value.trim();
-    if(!value) return;
-    searchHistory.push(value)
-    searchHistoryDisplay.innerHTML = '';
-    searchHistory.forEach((history)=>{
-      searchHistoryDisplay.innerHTML += `<p>${history}</p>`
-    })
-    searchInput.value = '';
-  })
-};
+// RANDOM BUTTON CLICK
+randomButton.addEventListener('click', () => {
+  fetchData('http://127.0.0.1:5000/api/data/');
+});
 
-clearHistoryButton.addEventListener('click', ()=>{
+// SEARCH BUTTON CLICK
+searchButton.addEventListener('click', () => {
+  const city = searchInput.value.trim();
+  
+  if (!city) return;
+  
+  searchWeather(city);
+  
+  searchHistory.push(city);
   searchHistoryDisplay.innerHTML = '';
-})
+  searchHistory.forEach((history) => {
+    searchHistoryDisplay.innerHTML += `<p>${history}</p>`;
+  });
+  
+  searchInput.value = '';
+});
 
-historyUpdate();
+clearHistoryButton.addEventListener('click', () => {
+  searchHistoryDisplay.innerHTML = '';
+});

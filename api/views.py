@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 import requests
 import random
 import os 
@@ -21,6 +21,24 @@ def weather_data():
     return jsonify(formated_data)
   else:
     return jsonify({'error': 'Error occured!'}), 400
+# 0726485536 MAMA CHUCHU = 100
+
+@views.route('/search/', methods=['POST'])
+def weather_search():
+  data = request.get_json()
+  city = data.get('city')
+  
+  if not city:
+    return jsonify({'error': 'City is required'}), 400
+  else:
+    url = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={API_KEY}&units=metric'
+    response = requests.get(url)
+    if response.status_code == 200:
+      values = response.json()
+      formated_data = data_format(values)
+      return jsonify(formated_data)
+    else:
+      return jsonify({'error': 'Error occured!'}), 404
     
 def data_format(data):
   return {
