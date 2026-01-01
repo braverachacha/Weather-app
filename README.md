@@ -10,6 +10,8 @@
 
 <h1 style='color:blue;'>Project Setup and Installation</h1>
 
+# Project structure
+<img style='border-radius:15px;' src="/images/project_structure.jpg" alt="">
 <p><strong>1. Clone the repository:</strong></p>
 
 ```bash
@@ -20,6 +22,7 @@ cd WeatherApp
 
 
 python -m venv env
+bash
 source env/bin/activate  # On Windows: env\Scripts\activate
 �
 3. Install dependencies:
