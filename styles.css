@@ -1,0 +1,123 @@
+*{
+  margin: 0; 
+  padding: 0; 
+}
+
+.container {
+  margin: 10px 5px;
+  padding: 5px;
+  font-size: 16px;
+}
+
+.header {
+  font-size: 42px; 
+  padding: 15px 5px;
+  background-color: hsl(118,84.8%,49%);
+  color: white; 
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.form_section {
+  border-bottom: 3px solid hsl(118,84.1%,45.9%);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+}
+
+.search_section {
+  padding: 5px;
+  display: flex; 
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+}
+
+.search_section input {
+  padding: 6px 4px;
+  border: 3px solid hsl(118,84.8%,49%); 
+  display: inline-block;
+  width: 70%;
+  border-radius:  5px 0 0 5px;
+  outline: none;
+  transition: .5s ease;
+}
+
+.search_section input:hover {
+  box-shadow: 0 0 5px hsl(118,84.1%,45.9%);
+}
+
+.search_section button {
+  padding: 9px 8px;
+  background-color: hsl(118,84.8%,49%);
+  font-weight: bold;
+  border: none; 
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  transform: .3s ease;
+}
+
+/* .search_section button:hover {
+  background-color: hsl(118,71.5%,30.8%);
+  border-radius: 2px 5px 5px 2px;
+} */
+
+.search_history {
+  border:  2px solid gray;
+  padding: 5px;
+  border-radius: 2px;
+  margin-bottom: 20px;
+}
+
+.search_history-header-section {
+  display: flex;
+  justify-content: space-between;
+}
+
+.search_history-header-section button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.search_history h4{
+  margin-bottom: 15px;
+}
+
+.history_section {
+  display: flex;
+  justify-content: space-between; 
+  padding: 5px 2px;
+}
+
+.history_section-display {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.random_button {
+  display: block;
+  background-color: hsl(33.5,81%,26.9%);
+  color: white;
+  font-weight: bold;
+  padding: 8px 0;
+  border-radius: 6px;
+  width: 75%;
+  margin: 4px auto;
+  border: none;
+  cursor: pointer;
+  transition: .3s ease;
+}
+
+.random_button:hover {
+  background-color: hsl(33.5,72.6%,23.9%);
+}
+
+.display_grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}

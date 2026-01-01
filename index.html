@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="styles.css">
+  <title>weather app</title>
+</head>
+<body>
+  <div class="header_section">
+    <h1 class="header">Weather App</h1>
+  </div>
+  <div class="container">
+    <div class="form_section">
+      <div class="search_section">
+        <input class="js-search-input" placeholder="Enter City" type="search">
+        <button class="js-search-button">Search</button>
+      </div>
+      <button class="random_button js-random-button">Get Random City</button>
+    </div>
+    <div class="search_history">
+      <div class="search_history-header-section">
+        <h4>Search history</h4>
+        <button class="js-clear-history">Clear history</button>
+      </div>
+      <div class="history_section">
+        <div class="history_section-display js-search-history">
+          
+        </div>
+      </div>
+    </div>
+    
+    <div class="display_grid js-display_grid">
+      
+    </div>
+    
+    <div class="random_city">
+      <h2 class="random_header">Random City Obtained</h2>
+      <h3 class="random_city-header">Kisii</h3>
+      <div class="random_city-elements">
+        <p class="temp js-temp">Temp : </p>
+        <p class="hum js-hum">Humidity : </p>
+        <p class="spe js-spe">Wind speed : </p>
+        <p class="desc js-desc">Description : </p>
+      </div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
