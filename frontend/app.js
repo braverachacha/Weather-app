@@ -16,7 +16,6 @@ const searchHistory = [];
 const dataObtained = []; 
 
 // DATA FETCH 
-// DATA FETCH 
 async function fetchData(url) {
   loadingElement.style.display = 'block'; // Show loading
   displayGrid.innerHTML = ''; // Clear previous content
@@ -51,7 +50,7 @@ async function searchWeather(cityName) {
   displayGrid.innerHTML = ''; // Clear previous content
   
   try {
-    const response = await fetch('http://127.0.0.1:5000/api/search/', {
+    const response = await fetch('https://weather-app-3xpk.onrender.com/api/search/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -106,7 +105,7 @@ const dataDisplay = () => {
 
 // RANDOM BUTTON CLICK
 randomButton.addEventListener('click', () => {
-  fetchData('http://127.0.0.1:5000/api/data/');
+  fetchData('https://weather-app-3xpk.onrender.com/api/data/');
 });
 
 // SEARCH BUTTON CLICK
