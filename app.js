@@ -20,18 +20,34 @@ const randomData = [];
 // LOGICS
 
 // DATA FETCH 
-randomButton.addEventListener('click', ()=>{
-  fetch('')
-    .then(res => res.json())
-    if (!res.ok) {
-      throw new Error('Error occured!');
+async function fetchData(url) {
+  try {
+    const response = await fetch(`${url}`);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: `);
     }
-    .then(data => {
-      randomData.push(data)
-      console.log(randomData)
-    })
-    .catch(err => console.error(err));
+    const data = await response.json();
+    dataObtained.push(data)
+  } catch (error) {
+    console.error('Fetch error:', error);
+  }
+}
+
+randomButton.addEventListener('click', ()=>{
+  fetchData('http://127.0.0.1:5000/api/data/')
+  value = dataObtained;
+  console.log(value)
 })
+
+const dataDisplay = ()=>{
+  if (randomData.length > 0) {
+    console.log(randomData)
+  } else {
+    console.log('blank')
+  }
+};
+dataDisplay();
+
 // HISORY UPDATE
 const historyUpdate = ()=>{
   searchButton.addEventListener('click', ()=>{
@@ -45,8 +61,8 @@ const historyUpdate = ()=>{
     searchInput.value = '';
   })
 };
-clearHistoryButton.addEventListener('click', ()=>{
 
+clearHistoryButton.addEventListener('click', ()=>{
   searchHistoryDisplay.innerHTML = '';
 })
 
