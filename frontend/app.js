@@ -123,12 +123,13 @@ async function searchWeather(cityName) {
 // -----------------------
 // DISPLAY DATA
 // -----------------------
+
 const dataDisplay = () => {
   displayGrid.innerHTML = '';
   
   if (dataObtained.length > 0) {
     dataObtained.forEach((weather) => {
-      displayGrid.innerHTML += `
+      displayGrid.innerHTML = `
         <div class="weather-card">
           <button class="delete-card">×</button>
           <h2>${weather.city}, ${weather.country}</h2>
@@ -142,7 +143,7 @@ const dataDisplay = () => {
             <p>Max: ${Math.round(weather.temp_max)}°C | Min: ${Math.round(weather.temp_min)}°C</p>
           </div>
         </div>
-      `;
+      ` + displayGrid.innerHTML; // prepend
     });
   } else {
     console.log('No data available');
