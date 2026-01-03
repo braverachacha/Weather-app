@@ -21,7 +21,6 @@ def weather_data():
     return jsonify(formated_data)
   else:
     return jsonify({'error': 'Error occured!'}), 400
-# 0726485536 MAMA CHUCHU = 100
 
 @views.route('/search/', methods=['POST'])
 def weather_search():
