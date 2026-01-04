@@ -1,31 +1,31 @@
-// -----------------------
+
 // BUTTONS
-// -----------------------
+
 const randomButton = document.querySelector('.js-random-button');
 const clearHistoryButton = document.querySelector('.js-clear-history');
 const searchButton = document.querySelector('.js-search-button');
 
-// -----------------------
+
 // INPUTS
-// -----------------------
+
 const searchInput = document.querySelector('.js-search-input');
 
-// -----------------------
+
 // DISPLAY ELEMENTS
-// -----------------------
+
 const searchHistoryDisplay = document.querySelector('.js-search-history'); 
 const displayGrid = document.querySelector('.js-display_grid');
 const loadingElement = document.querySelector('.js-loading');
 
-// -----------------------
+
 // GLOBAL VARIABLES
-// -----------------------
+
 const searchHistory = []; 
 const dataObtained = []; 
 
-// -----------------------
+
 // LOCAL STORAGE HELPERS
-// -----------------------
+
 function saveWeatherToLocalStorage() {
   localStorage.setItem('weatherData', JSON.stringify(dataObtained));
 }
@@ -52,14 +52,14 @@ function loadHistoryFromLocalStorage() {
 
 function renderSearchHistory() {
   searchHistoryDisplay.innerHTML = '';
-  searchHistory.forEach((history) => {
-    searchHistoryDisplay.innerHTML += `<p>${history}</p>`;
-  });
+  for (let i = searchHistory.length - 1; i >= 0; i--) {
+    searchHistoryDisplay.innerHTML += `<p>${searchHistory[i]}</p>`;
+  }
 }
 
-// -----------------------
+
 // DATA FETCH
-// -----------------------
+
 async function fetchData(url) {
   loadingElement.style.display = 'block';
   displayGrid.innerHTML = '';
@@ -86,9 +86,9 @@ async function fetchData(url) {
   }
 }
 
-// -----------------------
+
 // SEARCH WEATHER
-// -----------------------
+
 async function searchWeather(cityName) {
   loadingElement.style.display = 'block';
   displayGrid.innerHTML = '';
@@ -120,46 +120,61 @@ async function searchWeather(cityName) {
   }
 }
 
-// -----------------------
+
 // DISPLAY DATA
-// -----------------------
+
 
 const dataDisplay = () => {
   displayGrid.innerHTML = '';
-  
+
   if (dataObtained.length > 0) {
     dataObtained.forEach((weather) => {
       displayGrid.innerHTML = `
         <div class="weather-card">
           <button class="delete-card">×</button>
-          <h2>${weather.city}, ${weather.country}</h2>
-          <img src="https://openweathermap.org/img/wn/${weather.icon}@2x.png" alt="${weather.description}">
-          <p class="temp">${Math.round(weather.temp)}°C</p>
+          <h2 class="city-name">${weather.city}, ${weather.country}</h2>
+          <img src="https://openweathermap.org/img/wn/${weather.icon}@2x.png" alt="${weather.description}" class="weather-icon">
+          <p class="temp">🌡️ ${Math.round(weather.temp)}°C</p>
           <p class="description">${weather.description}</p>
+
           <div class="details">
-            <p>Feels like: ${Math.round(weather.feels_like)}°C</p>
-            <p>Humidity: ${weather.humidity}%</p>
-            <p>Wind: ${weather.wind} m/s</p>
-            <p>Max: ${Math.round(weather.temp_max)}°C | Min: ${Math.round(weather.temp_min)}°C</p>
+            <div class="details-left">
+              <p><strong>Main:</strong> ${weather.main}</p>
+              <p><strong>Feels like:</strong> ${Math.round(weather.feels_like)}°C</p>
+              <p><strong>Humidity:</strong> ${weather.humidity}%</p>
+              <p><strong>Wind:</strong> ${weather.wind} m/s</p>
+            </div>
+            <div class="details-right">
+              <p><strong>Pressure:</strong> ${weather.pressure} hPa</p>
+              <p><strong>Ground level:</strong> ${weather.grnd_level} hPa</p>
+              <p><strong>Sea level:</strong> ${weather.sea_level} hPa</p>
+              <p><strong>Max/Min:</strong> ${Math.round(weather.temp_max)}°C / ${Math.round(weather.temp_min)}°C</p>
+              <p><strong>Sunrise:</strong> ${new Date(weather.sunrise * 1000).toLocaleTimeString()}</p>
+              <p><strong>Sunset:</strong> ${new Date(weather.sunset * 1000).toLocaleTimeString()}</p>
+            </div>
           </div>
         </div>
-      ` + displayGrid.innerHTML; // prepend
+      ` + displayGrid.innerHTML; // newest on top
     });
   } else {
-    console.log('No data available');
+    displayGrid.innerHTML = `
+      <div class="placeholder">
+        <p>No weather data available. Start by searching for a city or getting a random one!</p>
+      </div>
+    `;
   }
 };
 
-// -----------------------
+
 // RANDOM BUTTON CLICK
-// -----------------------
+
 randomButton.addEventListener('click', () => {
   fetchData('https://weather-app-3xpk.onrender.com/api/data/');
 });
 
-// -----------------------
+
 // SEARCH BUTTON CLICK
-// -----------------------
+
 searchButton.addEventListener('click', () => {
   const city = searchInput.value.trim();
   if (!city) return;
@@ -173,18 +188,18 @@ searchButton.addEventListener('click', () => {
   searchInput.value = '';
 });
 
-// -----------------------
+
 // CLEAR HISTORY
-// -----------------------
+
 clearHistoryButton.addEventListener('click', () => {
   searchHistory.length = 0;
   localStorage.removeItem('searchHistory');
   searchHistoryDisplay.innerHTML = '';
 });
 
-// -----------------------
+
 // DELETE CARD HANDLER (Permanent)
-// -----------------------
+
 function handleCardDeletion(event) {
   if (event.target.classList.contains('delete-card')) {
     const card = event.target.closest('.weather-card');
@@ -203,8 +218,8 @@ function handleCardDeletion(event) {
 // Event delegation for dynamic cards
 displayGrid.addEventListener('click', handleCardDeletion);
 
-// -----------------------
+
 // LOAD LOCAL STORAGE ON PAGE LOAD
-// -----------------------
+
 loadWeatherFromLocalStorage();
 loadHistoryFromLocalStorage();
